@@ -1,6 +1,6 @@
 <?php
 
-	$myPDO = new PDO("pgsql:host=localhost;dbname=db_pos", "postgres", "12345");
+	$myPDO = new PDO("pgsql:host=localhost;dbname=db_pos", "zaxon", "fikijaya25");
 
 
 ?>
