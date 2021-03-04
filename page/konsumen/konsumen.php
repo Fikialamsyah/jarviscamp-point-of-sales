@@ -1,8 +1,8 @@
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Dashboard</h1>
+                        <h1 class="mt-4">Data Konsumen</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Dashboard</li>
+                            <li class="breadcrumb-item active">Konsumen</li>
                         </ol>
                         <div class="card-body">
                                 <div class="table-responsive">
@@ -16,15 +16,6 @@
                                                 <th>Email</th>
                                             </tr>
                                         </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Nama</th>
-                                                <th>Alamat</th>
-                                                <th>Telepon</th>
-                                                <th>Email</th>
-                                            </tr>
-                                        </tfoot>
                                         <tbody>
                                             <?php 
                                                 $no = 1;
@@ -40,7 +31,7 @@
                                                 <td><?= $row['telpon']?></td>
                                                 <td><?= $row['email']?></td>
                                             </tr>
-                                            
+
                                             <?php 
                                                 }
                                             ?>
