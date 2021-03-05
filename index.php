@@ -5,6 +5,14 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 
 include "kodepj.php";
 
+session_start();
+
+if (!isset($_SESSION["login"])) {
+    header ("Location: login.php");
+
+    exit;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +51,7 @@ include "kodepj.php";
                         <a class="dropdown-item" href="?page=setting">Settings</a>
                         <a class="dropdown-item" href="#">Activity Log</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="login.html">Logout</a>
+                        <a class="dropdown-item" href="logout.php">Logout</a>
                     </div>
                 </li>
             </ul>
@@ -130,21 +138,21 @@ include "kodepj.php";
                 		}
                 	}
 
-                    if ($page == "supplier") {
+                    if ($page == "vendor") {
                         if ($aksi == "") {
-                            include "page/supplier/supplier.php";
+                            include "page/vendor/vendor.php";
                         }
 
                         if ($aksi == "tambah") {
-                            include "page/supplier/tambah.php";
+                            include "page/vendor/tambah.php";
                         }
 
                         if ($aksi == "edit") {
-                            include "page/supplier/edit.php";
+                            include "page/vendor/edit.php";
                         }
 
                         if ($aksi == "delete") {
-                            include "page/supplier/delete.php";
+                            include "page/vendor/delete.php";
                         }
                     }
 
@@ -235,8 +243,8 @@ include "kodepj.php";
                             include "page/kategori_toko/edit.php";
                         }
 
-                        if ($aksi == "delete") {
-                            include "page/kategori_toko/delete.php";
+                        if ($aksi == "hapus") {
+                            include "page/kategori_toko/hapus.php";
                         }
 
                     }

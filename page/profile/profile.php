@@ -1,8 +1,8 @@
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Data Konsumen</h1>
+                        <h1 class="mt-4">Data Profile</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Konsumen</li>
+                            <li class="breadcrumb-item active">Profile</li>
                         </ol>
                         <div class="card-body">
                                 <div class="table-responsive">
