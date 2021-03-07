@@ -7,7 +7,7 @@
     $server = "localhost";
     $database = "jarvis";
     $username = "root";
-    $password = "";
+    $password = "Sttnf160101@!";
 
     
     $conn = mysqli_connect($server, $username, $password, $database);

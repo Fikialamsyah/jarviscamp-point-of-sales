@@ -44,4 +44,35 @@ require 'koneksi.php';
 
     }
 
+
+    function query($query){
+        global $conn;
+        $result = mysqli_query($conn, $query);
+        $rows = [];
+        while($row = mysqli_fetch_assoc($result)){
+            $rows[] = $row;
+        }
+        return $rows;
+    }    
+
+    function ubah($data){
+        global $conn;
+    
+        global $conn;
+        $id = $data["id"];
+        $nama = htmlspecialchars($data["nama"]);
+        $tempat_lahir = htmlspecialchars($data["tempat_lahir"]);
+        $tanggal_lahir = htmlspecialchars($data["tanggal_lahir"]);
+        $gender_id = htmlspecialchars($data["gender_id"]);
+    
+        // update 
+        mysqli_query($conn, "UPDATE profile SET
+                                nama = '$nama', 
+                                tempat_lahir = '$tempat_lahir', 
+                                tanggal_lahir = '$tanggal_lahir', 
+                                gender_id = '$gender_id'
+                             WHERE id = $id");
+                            
+        return mysqli_affected_rows($conn);                    
+    }
 ?>

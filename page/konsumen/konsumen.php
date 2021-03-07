@@ -1,3 +1,6 @@
+<?php
+    require('koneksi.php');
+?>        
                 <main>
                     <div class="container-fluid">
                         <h1 class="mt-4">Data Konsumen</h1>
