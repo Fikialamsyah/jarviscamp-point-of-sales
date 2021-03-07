@@ -34,14 +34,13 @@ if(isset($_POST["submit"])){
 <body>
     <main>
         <div class="container-fluid">
-                <h1 class="mt-4">Profile User</h1>
+                <h1 class="mt-4">Informasi User</h1>
                 <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item active">Profile User</li>
+                    <li class="breadcrumb-item active">Informasi User</li>
                 </ol>
 
                 <div class="container-fluid card p-3 w-100">
                 <form action="" method="POST">
-                <h3>User</h3><hr>
                 <div class="row">
                     <div class="col">
                         <input type="hidden" name="id" value="<?= $profile['id'];?>">

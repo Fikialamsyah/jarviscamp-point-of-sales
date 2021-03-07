@@ -45,8 +45,7 @@ if (!isset($_SESSION["login"])) {
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="?page=profile">Informasi User</a>
-                        <a class="dropdown-item" href="#">Activity Log</a>
+                        <a class="dropdown-item" href="?page=setting">Akun</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="logout.php">Logout</a>
                     </div>
@@ -69,20 +68,6 @@ if (!isset($_SESSION["login"])) {
                                 Informasi Profile
                             </a>
 
-                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#datamaster" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Data Master
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="datamaster" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="?page=kelola_user">Data User</a>
-                                    <a class="nav-link" href="?page=vendor">Data Vendor</a>
-                                    <a class="nav-link" href="?page=barang">Data Barang</a>
-                                    <a class="nav-link" href="?page=toko"> Data Toko</a>
-                                </nav>
-                            </div>
-
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#transaksipenjualan" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Transaksi Penjualan
@@ -95,17 +80,6 @@ if (!isset($_SESSION["login"])) {
                                 </nav>
                             </div>
 
-                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#transaksipembelian" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Transaksi Pembelian
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="transaksipembelian" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="?page=pembelian">Pembelian</a>
-                                    <a class="nav-link" href="?page=laporan_pembelian">Laporan Pembelian</a>
-                                </nav>
-                            </div>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
@@ -121,60 +95,6 @@ if (!isset($_SESSION["login"])) {
                 	$page = $_GET['page'];
                 	$aksi = $_GET['aksi'];
 
-
-                	if ($page == "barang") {
-                		if ($aksi == "") {
-                			include "page/barang/barang.php";
-                		}
-
-                		if ($aksi == "tambah") {
-                			include "page/barang/tambah.php";
-                		}
-
-                		if ($aksi == "edit") {
-                			include "page/barang/edit.php";
-                		}
-
-                		if ($aksi == "delete") {
-                			include "page/barang/delete.php";
-                		}
-                	}
-
-                    if ($page == "kelola_user") {
-                        if ($aksi == "") {
-                            include "page/kelola_user/kelola_user.php";
-                        }
-
-                        if ($aksi == "tambah") {
-                            include "page/kelola_user/tambah.php";
-                        }
-
-                        if ($aksi == "edit") {
-                            include "page/kelola_user/edit.php";
-                        }
-
-                        if ($aksi == "delete") {
-                            include "page/kelola_user/delete.php";
-                        }
-                    }
-
-                    if ($page == "vendor") {
-                        if ($aksi == "") {
-                            include "page/vendor/vendor.php";
-                        }
-
-                        if ($aksi == "tambah") {
-                            include "page/vendor/tambah.php";
-                        }
-
-                        if ($aksi == "edit") {
-                            include "page/vendor/edit.php";
-                        }
-
-                        if ($aksi == "delete") {
-                            include "page/vendor/delete.php";
-                        }
-                    }
 
                 	if ($page == "user_profile") {
                 		if ($aksi == "") {
@@ -212,24 +132,6 @@ if (!isset($_SESSION["login"])) {
                 		}
                 	}
 
-                    if ($page == "pembelian") {
-                        if ($aksi == "") {
-                            include "page/pembelian/pembelian.php";
-                        }
-
-                        if ($aksi == "tambah") {
-                            include "page/pembelian/tambah.php";
-                        }
-
-                        if ($aksi == "edit") {
-                            include "page/pembelian/edit.php";
-                        }
-
-                        if ($aksi == "delete") {
-                            include "page/pembelian/delete.php";
-                        }
-                    }
-
                     if ($page == "laporan_penjualan") {
                         if ($aksi == "") {
                             include "page/laporan_penjualan/laporan.php";
@@ -241,44 +143,13 @@ if (!isset($_SESSION["login"])) {
                     
                     }
 
-                    if($page == "laporan_pembelian") {
-                        if ($aksi == "") {
-                            include "page/laporan_pembelian/laporan_pembelian.php";
-                        }
-                        if ($aksi == "view") {
-                            include "page/laporan_pembelian/view.php";
-                        }
-
+                    if($page == "setting"){
+                        include "page/setting/setting.php";
                     }
-                
-
-                    if($page == "toko") {
-                        if ($aksi == "") {
-                            include "page/toko/toko.php";
-                        }
-                        if ($aksi == "tambah") {
-                            include "page/toko/tambah.php";
-                        }
-
-                        if ($aksi == "edit") {
-                            include "page/toko/edit.php";
-                        }
-
-                        if ($aksi == "hapus") {
-                            include "page/toko/hapus.php";
-                        }
-
-                    }
-
-                    if ($page == "profile"){
-                        include "page/setting/profile.php";
-                        
 
                     if ($page == "") {
                         include "home.php";
                     }
-                }
-                    
                 ?>
             </div>
         </div>
