@@ -1,8 +1,8 @@
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Data Profile</h1>
+                        <h1 class="mt-4">Data User</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Profile</li>
+                            <li class="breadcrumb-item active">Data User</li>
                         </ol>
                         <div class="card-body">
                                 <div class="table-responsive">
@@ -10,10 +10,11 @@
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>Nama</th>
-                                                <th>Alamat</th>
-                                                <th>Telepon</th>
+                                                <th>Username</th>
                                                 <th>Email</th>
+                                                <th>Password</th>
+                                                <th>Created_at</th>
+                                                <th>Updated_at</th>
                                             </tr>
                                         </thead>
                                         <tbody>

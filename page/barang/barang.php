@@ -1,8 +1,8 @@
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Data Kategori Toko</h1>
+                        <h1 class="mt-4">Data Barang</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Kategori Toko</li>
+                            <li class="breadcrumb-item active">Data Barang</li>
                         </ol>
                         <div class="card-body">
                                 <a href="?page=barang&aksi=tambah" class="btn btn-secondary mb-2">Tambah Data</a>
@@ -40,7 +40,7 @@
                                                 <td><?= $row['harga_jual']; ?></td>
                                                 <td>
                                                     <a href="?page=barang&aksi=edit&id=<?= $row['id']; ?>" class="btn btn-success">Edit</a>
-                                                    <a onclick="return confirm('Apakah anda yakin ingin menghapus data ini ?')" href="?page=barang&aksi=hapus&id=<?= $row['id']; ?>" class="btn btn-danger">Delete</a>
+                                                    <a onclick="return confirm('Apakah anda yakin ingin menghapus data ini ?')" href="?page=barang&aksi=delete&id=<?= $row['id']; ?>" class="btn btn-danger">Delete</a>
                                                 </td>
                                             </tr>
 

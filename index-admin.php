@@ -68,6 +68,11 @@ if (!isset($_SESSION["login"])) {
                                 Informasi Profile
                             </a>
 
+                            <a class="nav-link" href="?page=toko">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Informasi Toko
+                            </a>
+
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#datamaster" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Data Master
@@ -75,10 +80,8 @@ if (!isset($_SESSION["login"])) {
                             </a>
                             <div class="collapse" id="datamaster" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="?page=kelola_user">Data User</a>
                                     <a class="nav-link" href="?page=vendor">Data Vendor</a>
                                     <a class="nav-link" href="?page=barang">Data Barang</a>
-                                    <a class="nav-link" href="?page=toko"> Data Toko</a>
                                 </nav>
                             </div>
 
@@ -105,6 +108,10 @@ if (!isset($_SESSION["login"])) {
                                     <a class="nav-link" href="?page=laporan_pembelian">Laporan Pembelian</a>
                                 </nav>
                             </div>
+                            <a class="nav-link" href="?page=kelola_user">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Kelola User
+                            </a>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
@@ -139,24 +146,6 @@ if (!isset($_SESSION["login"])) {
                 		}
                 	}
 
-                    if ($page == "kelola_user") {
-                        if ($aksi == "") {
-                            include "page/kelola_user/kelola_user.php";
-                        }
-
-                        if ($aksi == "tambah") {
-                            include "page/kelola_user/tambah.php";
-                        }
-
-                        if ($aksi == "edit") {
-                            include "page/kelola_user/edit.php";
-                        }
-
-                        if ($aksi == "delete") {
-                            include "page/kelola_user/delete.php";
-                        }
-                    }
-
                     if ($page == "vendor") {
                         if ($aksi == "") {
                             include "page/vendor/vendor.php";
@@ -175,21 +164,21 @@ if (!isset($_SESSION["login"])) {
                         }
                     }
 
-                	if ($page == "user_profile") {
+                	if ($page == "kelola_user") {
                 		if ($aksi == "") {
-                			include "page/user_profile/user_profile.php";
+                			include "page/kelola_user/kelola_user.php";
                 		}
 
                 		if ($aksi == "tambah") {
-                			include "page/user_profile/tambah.php";
+                			include "page/kelola_user/tambah.php";
                 		}
 
                 		if ($aksi == "edit") {
-                			include "page/user_profile/edit.php";
+                			include "page/kelola_user/edit.php";
                 		}
 
                 		if ($aksi == "delete") {
-                			include "page/user_profile/delete.php";
+                			include "page/kelola_user/delete.php";
                 		}
                 	}
 
@@ -250,26 +239,16 @@ if (!isset($_SESSION["login"])) {
 
                     }
 
-                    if($page == "toko") {
-                        if ($aksi == "") {
-                            include "page/toko/toko.php";
-                        }
-                        if ($aksi == "tambah") {
-                            include "page/toko/tambah.php";
-                        }
-
-                        if ($aksi == "edit") {
-                            include "page/toko/edit.php";
-                        }
-
-                        if ($aksi == "hapus") {
-                            include "page/toko/hapus.php";
-                        }
-
+                    if($page == "setting"){
+                        include "page/setting/setting.php";
                     }
 
-                    if ($page == "setting"){
-                        include "page/setting/setting.php";
+                    if($page == "informasi_toko"){
+                        include "page/informasi_toko/informasi_toko.php";
+                    }
+
+                    if($page == "user_profile"){
+                        include "page/user_profile/user_profile.php";
                     }
 
                     if ($page == "") {

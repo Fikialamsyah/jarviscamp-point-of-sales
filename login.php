@@ -15,7 +15,7 @@
         $email = $_POST["email"];
         $password = $_POST["password"];
 
-        $result = mysqli_query($conn, "SELECT * FROM user WHERE email = '$email'");
+        $result = mysqli_query($conn, "SELECT * FROM role_has_user JOIN user ON role_has_user.user_id = user.id JOIN role ON role_has_user.role_id = role.id WHERE user.email = '$email'");
 
         if (mysqli_num_rows($result) === 1) {
 
@@ -26,8 +26,17 @@
                 
                 // set session
                 $_SESSION["login"] = true;
-                
-                header("Location: index.php");
+                $_SESSION["id"] = $row["user_id"];
+                $_SESSION["nama_user"] = $row["username"];
+                $_SESSION["nama_role"] = $row["nama_role"];
+
+                if ($_SESSION["nama_role"] == "superadmin") {
+                    header("Location: index.php");
+                } elseif ($_SESSION["nama_role"] == "admin toko") {
+                    header("Location: index-admin.php");
+                } elseif ($_SESSION["nama_role"] == "pegawai") {
+                    header("Location: index-pegawai.php");
+                }
 
                 exit;
             }

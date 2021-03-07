@@ -1,8 +1,8 @@
                   <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Data Kategori Toko</h1>
+                        <h1 class="mt-4">Data Produk</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Kategori Toko</li>
+                            <li class="breadcrumb-item active">Data Produk</li>
                         </ol>
                           <form method="POST">
                             <div class="form-group">
@@ -25,7 +25,7 @@
 
                                     foreach ($conn->query($sql) as $row) {
                                 ?>
-                              <option value="<?= $row['nama']?>"><?= $row['nama']?></option>
+                              <option value="<?= $row['id']?>"><?= $row['nama']?></option>
                                 <?php 
                                     }
                                 ?>
@@ -61,8 +61,6 @@
                         $hargaJual = $_POST['hargaJual'];
 
                         $tambah = $conn->query("insert into produk (id, nama, harga_jual, deskripsi, stok, produk_kategori_id, kode_produk, harga_beli) values ('', '$nama', '$hargaJual', '$deskripsi', '$stok', '$kategori', '$kode', '$hargaBeli')");
-
-                        $result = mysql_query($tambah) or die (mysql_error());
 
                         if ($tambah) {
                           ?>
