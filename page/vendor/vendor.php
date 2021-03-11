@@ -21,9 +21,11 @@
                                         <tbody>
                                             <?php 
                                                 $no = 1;
-                                                $sql = "SELECT * FROM vendor";
+                                                $sql = $myPDO->prepare("SELECT * FROM vendor");
+                                                $sql->execute();
 
-                                                foreach ($conn->query($sql) as $row) {
+                                                while($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+                                                // foreach ($conn->query($sql) as $row) {
                                             ?>
                                             
                                             <tr>
@@ -33,8 +35,8 @@
                                                 <td><?= $row['telpon']; ?></td>
                                                 <td><?= $row['alamat']; ?></td>
                                                 <td>
-                                                    <a href="?page=vendor&aksi=edit&id=<?= $row['id']; ?>" class="btn btn-success">Edit</a>
-                                                    <a onclick="return confirm('Apakah anda yakin ingin menghapus data ini ?')" href="?page=vendor&aksi=delete&id=<?= $row['id']; ?>" class="btn btn-danger">Delete</a>
+                                                    <a href="?page=vendor&aksi=edit&id=<?= $row['id']; ?>" class="btn btn-success"><i class="fas fa-pencil-alt"></i></a>
+                                                    <a onclick="return confirm('Apakah anda yakin ingin menghapus data ini ?')" href="?page=vendor&aksi=delete&id=<?= $row['id']; ?>" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                                 </td>
                                             </tr>
 

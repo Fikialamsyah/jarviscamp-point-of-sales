@@ -1,7 +1,5 @@
 <?php
 
-require('function.php');
-
 $profile = query("SELECT * FROM profile")[0];
 
 if(isset($_POST["submit"])){

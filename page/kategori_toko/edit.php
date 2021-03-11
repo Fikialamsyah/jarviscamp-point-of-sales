@@ -1,7 +1,8 @@
                   <?php 
                       $id = $_GET['id'];
-                      $sql = $conn->query("select * from produk_kategori where id = '$id'");
-                      $tampil = $sql->fetch_assoc();
+                      $sql = $myPDO->prepare("select * from produk_kategori where id = '$id'");
+                      $sql->execute();
+                      $tampil = $sql->fetch(PDO::FETCH_ASSOC);
                   ?>
 
                   <main>
@@ -26,17 +27,19 @@
                       if (isset($_POST['update'])) {
                         $nama = $_POST['nama'];
 
-                        $sql = $conn->query("update produk_kategori set nama='$nama' where id = '$id'");
+                        $sql = $myPDO->prepare("update produk_kategori set nama='$nama' where id = '$id'");
 
-                        if ($sql) {
-                          ?>
+                        try {
 
-                          <script type="text/javascript">
-                            alert("Data Berhasil di Simpan");
-                            window.location.href="?page=kategori_toko";
-                          </script>
-
-                          <?php 
+                          $sql->execute();
+                          echo '
+                            <script type="text/javascript">
+                              alert("Data Berhasil di Update");
+                              window.location.href="?page=kategori_toko";
+                            </script>';
+                        }
+                        catch(PDOException $e) {
+                            echo $e->getMessage();
                         }
                       }
                    ?>

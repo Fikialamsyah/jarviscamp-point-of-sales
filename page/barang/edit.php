@@ -1,7 +1,10 @@
                     <?php 
                       $id = $_GET['id'];
-                      $sql = $conn->query("select * from produk where id = '$id'");
-                      $tampil = $sql->fetch_assoc();
+                      // $sql = $conn->query("select * from produk where id = '$id'");
+                      // $tampil = $sql->fetch_assoc();
+                      $sql = $myPDO->prepare("SELECT * FROM produk WHERE id = '$id' ");
+                      $sql->execute();
+                      $tampil = $sql->fetch(PDO::FETCH_ASSOC);
                   ?>
 
                   <main>
@@ -27,9 +30,12 @@
                             <label for="kategori">Kategori Produk</label>
                             <select class="form-control" id="kategori" name="kategori">
                                 <?php 
-                                    $sql = "SELECT * FROM produk_kategori";
+                                    // $sql = "SELECT * FROM produk_kategori";
+                                    // foreach ($conn->query($sql) as $row) {
+                                    $sql = $myPDO->prepare("SELECT * FROM produk_kategori");
+                                    $sql->execute();
 
-                                    foreach ($conn->query($sql) as $row) {
+                                    while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
                                 ?>
                               <option value="<?= $row['id']?>"><?= $row['nama']?></option>
                                 <?php 
@@ -66,17 +72,21 @@
                         $hargaBeli = $_POST['hargaBeli'];
                         $hargaJual = $_POST['hargaJual'];
 
-                        $update = $conn->query("UPDATE produk SET nama = '$nama', harga_jual = '$hargaJual', deskripsi = '$deskripsi', stok = '$stok', produk_kategori_id = '$kategori', kode_produk = '$kode', harga_beli = '$hargaBeli' WHERE id = '$id' ");
+                        // $update = $conn->query("UPDATE produk SET nama = '$nama', harga_jual = '$hargaJual', deskripsi = '$deskripsi', stok = '$stok', produk_kategori_id = '$kategori', kode_produk = '$kode', harga_beli = '$hargaBeli' WHERE id = '$id' ");
 
-                        if ($update) {
-                          ?>
+                        $sql = $myPDO->prepare("UPDATE produk SET nama = '$nama', harga_jual = '$hargaJual', deskripsi = '$deskripsi', stok = '$stok', produk_kategori_id = '$kategori', kode_produk = '$kode', harga_beli = '$hargaBeli' WHERE id = '$id' ");
+                        
+                        try {
 
-                          <script type="text/javascript">
-                            alert("Data Berhasil di Update");
-                            window.location.href="?page=barang";
-                          </script>
-
-                          <?php 
+                          $sql->execute();
+                          echo '
+                            <script type="text/javascript">
+                              alert("Data Berhasil di Update");
+                              window.location.href="?page=barang";
+                            </script>';
+                        }
+                        catch(PDOException $e) {
+                            echo $e->getMessage();
                         }
                       }
                    ?>

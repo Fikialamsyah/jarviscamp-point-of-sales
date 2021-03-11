@@ -1,7 +1,10 @@
                   <?php 
                       $id = $_GET['id'];
-                      $sql = $conn->query("select * from vendor where id = '$id'");
-                      $tampil = $sql->fetch_assoc();
+                      $sql = $myPDO->prepare("select * from vendor where id = '$id'");
+                      $sql->execute();
+
+                      $tampil = $sql->fetch(PDO::FETCH_ASSOC);
+                      // $tampil = $sql->fetch_assoc();
                   ?>
 
                   <main>
@@ -41,17 +44,19 @@
                         $telpon = $_POST['telpon'];
                         $alamat = $_POST['alamat'];
 
-                        $sql = $conn->query("update vendor set nama_vendor = '$nama', alamat = '$alamat', telpon = '$telpon', alamat = '$telpon' where id = '$id'");
+                        $sql = $myPDO->prepare("update vendor set nama_vendor = '$nama', alamat = '$alamat', telpon = '$telpon', alamat = '$telpon' where id = '$id'");
 
-                        if ($sql) {
-                          ?>
+                        try {
 
-                          <script type="text/javascript">
-                            alert("Data Berhasil di Simpan");
-                            window.location.href="?page=vendor";
-                          </script>
-
-                          <?php 
+                          $sql->execute();
+                          echo '
+                            <script type="text/javascript">
+                              alert("Data Berhasil di Update");
+                              window.location.href="?page=vendor";
+                            </script>';
+                        }
+                        catch(PDOException $e) {
+                            echo $e->getMessage();
                         }
                       }
                    ?>

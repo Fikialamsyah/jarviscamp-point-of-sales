@@ -24,9 +24,12 @@
                                         <tbody>
                                             <?php 
                                                 $no = 1;
-                                                $sql = "SELECT * FROM produk";
+                                                // $sql = "SELECT * FROM produk";
+                                                $sql = $myPDO->prepare("SELECT * FROM produk");
+                                                $sql->execute();
 
-                                                foreach ($conn->query($sql) as $row) {
+                                                // foreach ($conn->query($sql) as $row) {
+                                                while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
                                             ?>
                                             
                                             <tr>
@@ -39,8 +42,8 @@
                                                 <td><?= $row['harga_beli']; ?></td>
                                                 <td><?= $row['harga_jual']; ?></td>
                                                 <td>
-                                                    <a href="?page=barang&aksi=edit&id=<?= $row['id']; ?>" class="btn btn-success">Edit</a>
-                                                    <a onclick="return confirm('Apakah anda yakin ingin menghapus data ini ?')" href="?page=barang&aksi=delete&id=<?= $row['id']; ?>" class="btn btn-danger">Delete</a>
+                                                    <a href="?page=barang&aksi=edit&id=<?= $row['id']; ?>" class="btn btn-success"><i class="fas fa-pencil-alt"></i></a>
+                                                    <a onclick="return confirm('Apakah anda yakin ingin menghapus data ini ?')" href="?page=barang&aksi=delete&id=<?= $row['id']; ?>" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                                 </td>
                                             </tr>
 

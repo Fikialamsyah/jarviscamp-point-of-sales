@@ -18,17 +18,22 @@
                                         <tbody>
                                             <?php 
                                                 $no = 1;
-                                                $sql = "SELECT * FROM produk_kategori";
+                                                // $sql = "SELECT * FROM produk_kategori";
 
-                                                foreach ($conn->query($sql) as $row) {
+                                                // foreach ($conn->query($sql) as $row) {
+                                                $sql = $myPDO->prepare("SELECT * FROM produk");
+                                                $sql->execute();
+
+                                                while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+
                                             ?>
                                             
                                             <tr>
                                                 <td><?= $no++;?></td>
                                                 <td><?= $row['nama']?></td>
                                                 <td>
-                                                    <a href="?page=kategori_toko&aksi=edit&id=<?= $row['id']; ?>" class="btn btn-success">Edit</a>
-                                                    <a onclick="return confirm('Apakah anda yakin ingin menghapus data ini ?')" href="?page=kategori_toko&aksi=hapus&id=<?= $row['id']; ?>" class="btn btn-danger">Delete</a>
+                                                    <a href="?page=kategori_toko&aksi=edit&id=<?= $row['id']; ?>" class="btn btn-success"><i class="fas fa-pencil-alt"></i></a>
+                                                    <a onclick="return confirm('Apakah anda yakin ingin menghapus data ini ?')" href="?page=kategori_toko&aksi=hapus&id=<?= $row['id']; ?>" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                                 </td>
                                             </tr>
 

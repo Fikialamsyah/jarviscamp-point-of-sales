@@ -21,9 +21,10 @@
                             <label for="kategori">Kategori Produk</label>
                             <select class="form-control" id="kategori" name="kategori">
                                 <?php 
-                                    $sql = "SELECT * FROM informasi_toko";
+                                    $sql = $myPDO->prepare("SELECT * FROM informasi_toko");
+                                    while($row = $sql->fetch(PDO::FETCH_ASSOC)) {
 
-                                    foreach ($conn->query($sql) as $row) {
+                                    // foreach ($conn->query($sql) as $row) {
                                 ?>
                               <option value="<?= $row['id']?>"><?= $row['nama']?></option>
                                 <?php 
@@ -45,17 +46,20 @@
                         $telepon = $_POST['telepon'];
                         $kategori = $_POST['kategori'];
 
-                        $tambah = $conn->query("INSERT INTO toko (nama, alamat, telepon, informasi_toko_id) values ('$nama', '$alamat', '$telepon', '$kategori')");
+                        $tambah = $myPDO->prepare("INSERT INTO toko (id, nama, alamat, telepon, informasi_toko_id) VALUES ('', '$nama', '$alamat', '$telepon', '$kategori')");
 
-                        if ($tambah) {
-                          ?>
 
-                          <script type="text/javascript">
-                            alert("Data Berhasil di Simpan");
-                            window.location.href="?page=toko";
-                          </script>
+                        try {
 
-                          <?php 
+                          $sql->execute();
+                          echo '
+                            <script type="text/javascript">
+                              alert("Data Berhasil di Simpan");
+                              window.location.href="?page=toko";
+                            </script>';
+                        }
+                        catch(PDOException $e) {
+                            echo $e->getMessage();
                         }
                       }
                    ?>

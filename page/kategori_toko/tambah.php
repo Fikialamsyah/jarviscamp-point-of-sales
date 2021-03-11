@@ -20,17 +20,19 @@
                       if (isset($_POST['simpan'])) {
                         $nama = $_POST['nama'];
 
-                        $sql = $conn->query("insert into produk_kategori (id, nama) values ('', '$nama')");
+                        $sql = $myPDO->prepare("insert into produk_kategori (id, nama) values ('', '$nama')");
 
-                        if ($sql) {
-                          ?>
+                        try {
 
-                          <script type="text/javascript">
-                            alert("Data Berhasil di Simpan");
-                            window.location.href="?page=kategori_toko";
-                          </script>
-
-                          <?php 
+                          $sql->execute();
+                          echo '
+                            <script type="text/javascript">
+                              alert("Data Berhasil di Simpan");
+                              window.location.href="?page=kategori_toko";
+                            </script>';
+                        }
+                        catch(PDOException $e) {
+                            echo $e->getMessage();
                         }
                       }
                    ?>

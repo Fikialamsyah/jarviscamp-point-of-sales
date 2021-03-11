@@ -21,9 +21,14 @@
                             <label for="kategori">Kategori Produk</label>
                             <select class="form-control" id="kategori" name="kategori">
                                 <?php 
-                                    $sql = "SELECT * FROM produk_kategori";
+                                    // $sql = "SELECT * FROM produk_kategori";
 
-                                    foreach ($conn->query($sql) as $row) {
+                                    // foreach ($conn->query($sql) as $row) {
+
+                                    $sql = $myPDO->prepare("SELECT * FROM produk_kategori");
+                                    $sql->execute();
+
+                                    while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
                                 ?>
                               <option value="<?= $row['id']?>"><?= $row['nama']?></option>
                                 <?php 
@@ -60,17 +65,20 @@
                         $hargaBeli = $_POST['hargaBeli'];
                         $hargaJual = $_POST['hargaJual'];
 
-                        $tambah = $conn->query("insert into produk (id, nama, harga_jual, deskripsi, stok, produk_kategori_id, kode_produk, harga_beli) values ('', '$nama', '$hargaJual', '$deskripsi', '$stok', '$kategori', '$kode', '$hargaBeli')");
+                        // $tambah = $conn->query("insert into produk (id, nama, harga_jual, deskripsi, stok, produk_kategori_id, kode_produk, harga_beli) values ('', '$nama', '$hargaJual', '$deskripsi', '$stok', '$kategori', '$kode', '$hargaBeli')");
+                        $sql = $myPDO->prepare("insert into produk (id, nama, harga_jual, deskripsi, stok, produk_kategori_id, kode_produk, harga_beli) values (default, '$nama', '$hargaJual', '$deskripsi', '$stok', '$kategori', '$kode', '$hargaBeli')");
 
-                        if ($tambah) {
-                          ?>
+                        try {
 
-                          <script type="text/javascript">
-                            alert("Data Berhasil di Simpan");
-                            window.location.href="?page=barang";
-                          </script>
-
-                          <?php 
+                          $sql->execute();
+                          echo '
+                            <script type="text/javascript">
+                              alert("Data Berhasil di Simpan");
+                              window.location.href="?page=barang";
+                            </script>';
+                        }
+                        catch(PDOException $e) {
+                            echo $e->getMessage();
                         }
                       }
                    ?>

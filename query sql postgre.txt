@@ -1,0 +1,168 @@
+CREATE FUNCTION trigger_set_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = now();
+RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TABLE "user" (
+    id serial PRIMARY KEY,
+    username varchar(10) ,
+    PASSWORD varchar(100),
+    email varchar(45),
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now()
+);
+
+CREATE TRIGGER user_timestamp
+BEFORE
+UPDATE ON "user"
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TABLE vendor (
+    id serial PRIMARY KEY,
+    nama_vendor varchar(45),
+    alamat varchar(45),
+    telpon varchar(45),
+    email varchar(45)
+);
+
+CREATE TABLE "role" (
+    id serial PRIMARY KEY,
+    nama_role varchar(20),
+    deskripsi TEXT,
+    created_at TIMESTAMP DEFAULT now(),
+    update_at TIMESTAMP DEFAULT now()
+);
+
+CREATE TRIGGER role_timestamp
+BEFORE
+UPDATE ON "role"
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TYPE gender AS ENUM ('L', 'P');
+
+CREATE TABLE profile (
+    id serial PRIMARY KEY,
+    nama varchar(45),
+    tempat_lahir varchar(30),
+    tanggal_lahir date,
+    user_id int REFERENCES "user"(id),
+    gender gender
+);
+
+CREATE TABLE produk_kategori(
+    id serial PRIMARY KEY,
+    nama varchar(45)
+);
+
+CREATE TABLE produk (
+    id serial PRIMARY KEY,
+    nama varchar(45),
+    harga_jual varchar(45),
+    deskripsi varchar(45),
+    stok int,
+    produk_kategori_id int REFERENCES produk_kategori (id),
+    kode_produk varchar(45),
+    harga_beli varchar(45)
+);
+
+CREATE TABLE penjualan (
+    id serial PRIMARY KEY,
+    kode_penjualan varchar(10),
+    tgl_penjualan date,
+    jumlah_harga float,
+    produk_id int REFERENCES produk (id),
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now()
+);
+
+CREATE TRIGGER penjualan_timestamp
+BEFORE
+UPDATE ON penjualan
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TABLE pembelian (
+    id serial PRIMARY KEY,
+    tanggal date,
+    jumlah int,
+    produk_id int REFERENCES produk (id),
+    vendor_id int REFERENCES vendor (id),
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now(),
+    kode_pembelian varchar(45)
+);
+
+CREATE TRIGGER pembelian_timestamp
+BEFORE
+UPDATE ON pembelian
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TABLE toko (
+    id serial PRIMARY KEY,
+    nama varchar(45),
+    alamat varchar(45),
+    telepon varchar(13),
+    produk_id int REFERENCES produk (id),
+    informasi_toko_id int REFERENCES informasi_toko (id)
+);
+
+CREATE TABLE role_has_user (
+    role_id int REFERENCES "role" (id),
+    user_id int REFERENCES "user" (id)
+);
+
+CREATE TABLE riwayat_harga (
+    id serial PRIMARY KEY,
+    harga_jual float,
+    harga_beli float,
+    tanggal date,
+    produk_id int REFERENCES produk (id)
+);
+
+CREATE TABLE profile_has_toko (
+    profile_id int REFERENCES profile (id),
+    toko_id int REFERENCES toko (id)
+);
+
+CREATE TABLE informasi_toko (
+    id serial PRIMARY KEY,
+    nama varchar(20)
+);
+
+CREATE FUNCTION user_to_profile()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO profile (user_id) VALUES (NEW.id);
+RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER user_profile
+AFTER 
+INSERT ON "user"
+FOR EACH ROW
+EXECUTE PROCEDURE user_to_profile();
+
+CREATE FUNCTION user_to_role()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO role_has_user (role_id, user_id) VALUES (4, NEW.id);
+RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER user_role
+AFTER 
+INSERT ON "user"
+FOR EACH ROW
+EXECUTE PROCEDURE user_to_role();
+

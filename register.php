@@ -1,16 +1,72 @@
 <?php
 
-    require 'function.php';
+    require 'koneksi.php';
 
     if (isset($_POST['signup'])) {
-        if (registrasi($_POST) > 0) {
+        // if (registrasi($_POST) > 0) {
+        //     echo "
+        //     <script>
+        //         alert('user baru berhasil ditambahkan');
+        //     </script>";
+        // } else {
+        //     // echo mysqli_error($conn);
+        //     echo $myPDO->errorInfo();
+        // }
+        $username = $_POST["username"];
+        $password = $_POST["password"];
+        $password2 = $_POST["password"];
+        $email = $_POST["email"];
+
+        $query1 = $myPDO->prepare("SELECT username FROM user WHERE username = '$username");
+        $query1->execute();
+
+        $result = $query1->fetch(PDO::FETCH_ASSOC);
+        if ($result) {
+            echo "
+             <script>
+                 alert('username sudah terdaftar!');
+             </script>";
+
+             return false;
+        }
+
+        if ($password !== $password2) {
             echo "
             <script>
-                alert('user baru berhasil ditambahkan');
+                alert('Konfirmasi password tidak sesuai');
             </script>";
-        } else {
-            echo mysqli_error($conn);
+
+            return false;
         }
+
+        $password = password_hash($password, PASSWORD_DEFAULT);
+        // echo $username;
+        // echo $password;
+        // echo $email;
+        $table = ' "user" ';
+
+        $query2 = $myPDO->prepare("INSERT INTO $table (id, username, password, email) VALUES (default, '$username', '$password', '$email')");
+
+        try {
+            $query2->execute();
+            echo "
+                <script>
+                alert('user baru berhasil ditambahkan');
+                </script>";
+            // header("Location: index.php");
+        }
+        catch(PDOException $e) {
+            echo $e->getMessage();
+        }
+
+        // if($saved){
+        //     echo "
+        //     <script>
+        //         alert('user baru berhasil ditambahkan');
+        //     </script>";
+        // } else {
+        //     echo "raiso";
+        // }
     }
 
 ?>

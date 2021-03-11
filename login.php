@@ -4,9 +4,10 @@
 
     if (isset($_SESSION["login"])) {
         header("Location: index.php");
-
         exit;
     }
+
+
 
     require 'koneksi.php';
 
@@ -14,34 +15,63 @@
 
         $email = $_POST["email"];
         $password = $_POST["password"];
+        $table = ' "user" ';
 
-        $result = mysqli_query($conn, "SELECT * FROM role_has_user JOIN user ON role_has_user.user_id = user.id JOIN role ON role_has_user.role_id = role.id WHERE user.email = '$email'");
+        $result = $myPDO->prepare("SELECT * FROM role_has_user JOIN $table ON role_has_user.user_id = $table.id JOIN role ON role_has_user.role_id = role.id WHERE $table.email = '$email'");
 
-        if (mysqli_num_rows($result) === 1) {
+        try {
+            $result->execute();
 
             // cek password
-            $row = mysqli_fetch_assoc($result);
+            $hasil = $result->fetch(PDO::FETCH_ASSOC);
+            if (password_verify($password, $hasil["password"])){
 
-            if (password_verify($password, $row["password"])) {
-                
                 // set session
                 $_SESSION["login"] = true;
-                $_SESSION["id"] = $row["user_id"];
-                $_SESSION["nama_user"] = $row["username"];
-                $_SESSION["nama_role"] = $row["nama_role"];
+                $_SESSION["id"] = $hasil["user_id"];
+                $_SESSION["nama_user"] = $hasil["username"];
+                $_SESSION["nama_role"] = $hasil["nama_role"];
 
                 if ($_SESSION["nama_role"] == "superadmin") {
                     header("Location: index.php");
-                } elseif ($_SESSION["nama_role"] == "admin toko") {
+                } elseif ($_SESSION["nama_role"] == "admin_toko") {
                     header("Location: index-admin.php");
-                } elseif ($_SESSION["nama_role"] == "pegawai") {
+                } elseif ($_SESSION["nama_role"] == "pegawai_toko") {
                     header("Location: index-pegawai.php");
                 }
 
                 exit;
             }
-            
         }
+        catch(PDOException $e) {
+            echo $e->getMessage();
+        }
+
+        // if (mysqli_num_rows($result) === 1) {
+
+        //     // cek password
+        //     $row = mysqli_fetch_assoc($result);
+
+        //     if (password_verify($password, $row["password"])) {
+                
+        //         // set session
+        //         $_SESSION["login"] = true;
+        //         $_SESSION["id"] = $row["user_id"];
+        //         $_SESSION["nama_user"] = $row["username"];
+        //         $_SESSION["nama_role"] = $row["nama_role"];
+
+        //         if ($_SESSION["nama_role"] == "superadmin") {
+        //             header("Location: index.php");
+        //         } elseif ($_SESSION["nama_role"] == "admin toko") {
+        //             header("Location: index-admin.php");
+        //         } elseif ($_SESSION["nama_role"] == "pegawai") {
+        //             header("Location: index-pegawai.php");
+        //         }
+
+        //         exit;
+        //     }
+            
+        // }
 
         $error = true;
     }
@@ -56,7 +86,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Page Title - SB Admin</title>
+        <title>Login</title>
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
     </head>

@@ -1,8 +1,8 @@
                   <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Data Kategori Toko</h1>
+                        <h1 class="mt-4">Data Vendor</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Kategori Toko</li>
+                            <li class="breadcrumb-item active">Data Vendor</li>
                         </ol>
                           <form method="POST">
                             <div class="form-group">
@@ -35,17 +35,19 @@
                         $telpon = $_POST['telpon'];
                         $alamat = $_POST['alamat'];
 
-                        $sql = $conn->query("insert into vendor (id, nama_vendor, alamat, telpon, email) values ('', '$nama', '$alamat', '$telpon', '$email')");
+                        $sql = $myPDO->prepare("insert into vendor (id, nama_vendor, alamat, telpon, email) values ('', '$nama', '$alamat', '$telpon', '$email')");
 
-                        if ($sql) {
-                          ?>
+                        try {
 
-                          <script type="text/javascript">
-                            alert("Data Berhasil di Simpan");
-                            window.location.href="?page=vendor";
-                          </script>
-
-                          <?php 
+                          $sql->execute();
+                          echo '
+                            <script type="text/javascript">
+                              alert("Data Berhasil di Update");
+                              window.location.href="?page=vendor";
+                            </script>';
+                        }
+                        catch(PDOException $e) {
+                            echo $e->getMessage();
                         }
                       }
                    ?>

@@ -1,6 +1,4 @@
-<?php
-    require('koneksi.php');
-?>        
+
                 <main>
                     <div class="container-fluid">
                         <h1 class="mt-4">Data User</h1>
@@ -18,22 +16,31 @@
                                                 <th>Password</th>
                                                 <th>Created_at</th>
                                                 <th>Updated_at</th>
+                                                <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php 
                                                 $no = 1;
-                                                $sql = "SELECT * FROM profile";
+                                                $table = '"user"';
+                                                $sql = $myPDO->prepare("SELECT * FROM $table");
+                                                $sql->execute();
+                                                while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
 
-                                                foreach ($conn->query($sql) as $row) {
+                                                // foreach ($conn->query($sql) as $row) {
                                             ?>
                                             
                                             <tr>
                                                 <td><?= $no++;?></td>
-                                                <td><?= $row['nama']?></td>
-                                                <td><?= $row['alamat']?></td>
-                                                <td><?= $row['telpon']?></td>
+                                                <td><?= $row['username']?></td>
                                                 <td><?= $row['email']?></td>
+                                                <td><?= $row['password']?></td>
+                                                <td><?= $row['created_at']?></td>
+                                                <td><?= $row['updated_at']?></td>
+                                                <td>
+                                                     <a href="?page=kelola_user&aksi=edit&id=<?= $row['id']; ?>" class="btn btn-success"><i class="fas fa-pencil-alt"></i></a>
+                                                    <a onclick="return confirm('Apakah anda yakin ingin menghapus data ini ?')" href="?page=kelola_user&aksi=delete&id=<?= $row['id']; ?>" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                                </td>
                                             </tr>
 
                                             <?php 

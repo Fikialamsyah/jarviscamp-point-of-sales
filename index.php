@@ -270,14 +270,13 @@ if (!isset($_SESSION["login"])) {
 
                     }
 
-                    if ($page == "profile"){
-                        include "page/setting/profile.php";
-                        
+                    if($page == "setting"){
+                        include "page/setting/setting.php";
+                    }
 
                     if ($page == "") {
                         include "home.php";
                     }
-                }
                     
                 ?>
             </div>

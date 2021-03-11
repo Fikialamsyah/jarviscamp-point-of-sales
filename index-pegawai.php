@@ -58,7 +58,7 @@ if (!isset($_SESSION["login"])) {
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Main Menu</div>
-                            <a class="nav-link" href="index.php">
+                            <a class="nav-link" href="index-pegawai.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Home
                             </a>
