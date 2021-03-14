@@ -3,11 +3,16 @@
 	// postgresql
 try {
 	$myPDO = new PDO("pgsql:host=localhost;dbname=jarvis", "postgres", "12345");
-	// echo "Koneksi berhasil bos";
+    $myPDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 }
-catch(PDOException $e) {
-	echo $e->getMessage();
-}	
+catch(PDOException $error) {
+	echo 'Connection error: ' .$error->getMessage();
+}
+
+
+
+
 
 
 	// mysql

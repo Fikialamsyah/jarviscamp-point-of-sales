@@ -2,23 +2,25 @@
                     <div class="container-fluid">
                         <h1 class="mt-4">Data Toko</h1>
                         <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.php">Home</a></li>
                             <li class="breadcrumb-item active">Data Toko</li>
                         </ol>
-                        <div class="card-body">
-                                <a href="?page=toko&aksi=tambah" class="btn btn-secondary mb-2">Tambah Data</a>
+                        <div class="card mb-4 shadow rounded">
+                            <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Nama Toko</th>
-                                                <th>Alamat</th>
-                                                <th>Telepon</th>
-                                                <th>Kategory</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                    <a href="?page=toko&aksi=tambah" class="btn btn-secondary mb-2">Tambah Data</a>
+                                    <table class="table table-striped">
+                                      <thead class="thead-light">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Toko</th>
+                                            <th>Alamat</th>
+                                            <th>Telepon</th>
+                                            <th>Kategory</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
                                             <?php 
                                                 $no = 1;
                                                 $sql = $myPDO->prepare("SELECT toko.nama, toko.alamat, toko.telepon, informasi_toko.nama as category_toko FROM toko JOIN informasi_toko ON toko.informasi_toko_id = informasi_toko.id");
@@ -46,7 +48,8 @@
 
                                         </tbody>
                                     </table>
-                                </div>
+                                </div>      
                             </div>
+                        </div>
                     </div>
                 </main>

@@ -51,7 +51,7 @@
 
                         try {
 
-                          $sql->execute();
+                          $tambah->execute();
                           echo '
                             <script type="text/javascript">
                               alert("Data Berhasil di Simpan");

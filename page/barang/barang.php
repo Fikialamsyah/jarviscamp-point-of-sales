@@ -1,27 +1,29 @@
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Data Barang</h1>
+                        <h1 class="mt-4">Data Vendor</h1>
                         <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.php">Home</a></li>
                             <li class="breadcrumb-item active">Data Barang</li>
                         </ol>
-                        <div class="card-body">
-                                <a href="?page=barang&aksi=tambah" class="btn btn-secondary mb-2">Tambah Data</a>
+                        <div class="card mb-4 shadow rounded">
+                            <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Kode Produk</th>
-                                                <th>Nama</th>
-                                                <th>Deskripsi</th>
-                                                <th>Kategori</th>
-                                                <th>Stok</th>
-                                                <th>Harga Beli</th>
-                                                <th>Harga Jual</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                    <a href="?page=barang&aksi=tambah" class="btn btn-secondary mb-2">Tambah Data</a>
+                                    <table class="table table-striped">
+                                      <thead class="thead-light">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Kode Produk</th>
+                                            <th>Nama</th>
+                                            <th>Deskripsi</th>
+                                            <th>Kategori</th>
+                                            <th>Stok</th>
+                                            <th>Harga Beli</th>
+                                            <th>Harga Jual</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
                                             <?php 
                                                 $no = 1;
                                                 // $sql = "SELECT * FROM produk";
@@ -53,7 +55,8 @@
 
                                         </tbody>
                                     </table>
-                                </div>
+                                </div>      
                             </div>
+                        </div>
                     </div>
                 </main>

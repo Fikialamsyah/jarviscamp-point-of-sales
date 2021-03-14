@@ -35,14 +35,14 @@
                         $telpon = $_POST['telpon'];
                         $alamat = $_POST['alamat'];
 
-                        $sql = $myPDO->prepare("insert into vendor (id, nama_vendor, alamat, telpon, email) values ('', '$nama', '$alamat', '$telpon', '$email')");
+                        $sql = $myPDO->prepare("insert into vendor (id, nama_vendor, alamat, telpon, email) values (default, '$nama', '$alamat', '$telpon', '$email')");
 
                         try {
 
                           $sql->execute();
                           echo '
                             <script type="text/javascript">
-                              alert("Data Berhasil di Update");
+                              alert("Data Berhasil di Simpan");
                               window.location.href="?page=vendor";
                             </script>';
                         }

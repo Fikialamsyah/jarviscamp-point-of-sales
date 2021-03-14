@@ -1,6 +1,7 @@
 <?php
 include 'koneksi.php';
-error_reporting(E_ALL ^ (E_NOTICE | E_WARNING)); 
+include 'kodepj.php';
+// error_reporting(E_ALL ^ (E_NOTICE | E_WARNING)); 
 
 session_start();
 
@@ -90,7 +91,7 @@ if (!isset($_SESSION["login"])) {
                             </a>
                             <div class="collapse" id="transaksipenjualan" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="?page=penjualan">Penjualan</a>
+                                    <a class="nav-link" href="?page=penjualan&kodepj=<?= $kode; ?>">Penjualan</a>
                                     <a class="nav-link" href="?page=laporan_penjualan">Laporan Penjualan</a>
                                 </nav>
                             </div>
@@ -290,5 +291,6 @@ if (!isset($_SESSION["login"])) {
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
         <script src="assets/demo/datatables-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     </body>
 </html>
