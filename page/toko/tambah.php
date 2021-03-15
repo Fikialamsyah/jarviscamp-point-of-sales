@@ -20,8 +20,10 @@
                             <div class="form-group">
                             <label for="kategori">Kategori Produk</label>
                             <select class="form-control" id="kategori" name="kategori">
+                              <option value="">--Pilih--</option>
                                 <?php 
                                     $sql = $myPDO->prepare("SELECT * FROM informasi_toko");
+                                    $sql->execute();
                                     while($row = $sql->fetch(PDO::FETCH_ASSOC)) {
 
                                     // foreach ($conn->query($sql) as $row) {
@@ -46,7 +48,7 @@
                         $telepon = $_POST['telepon'];
                         $kategori = $_POST['kategori'];
 
-                        $tambah = $myPDO->prepare("INSERT INTO toko (id, nama, alamat, telepon, informasi_toko_id) VALUES ('', '$nama', '$alamat', '$telepon', '$kategori')");
+                        $tambah = $myPDO->prepare("INSERT INTO toko (id, nama, alamat, telepon, informasi_toko_id) VALUES (default, '$nama', '$alamat', '$telepon', '$kategori')");
 
 
                         try {

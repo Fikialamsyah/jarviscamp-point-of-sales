@@ -172,17 +172,14 @@
         <label class="d-flex justify-content-between"> 
         <span class="label-text label-text-cc-number">Metode Pembayaran :</span>
         </label> 
-        <select id="metode_pem" class="form-control col-md-6">
+        <select id="metode_pem" class="form-control">
             <option value="">Mandiri -- 0110219085</option>
             <option value="">BCA -- 0110219085</option>
             <option value="">BRI -- 0110219085</option>
         </select>
         </div>
-        <div class="d-flex justify-content-between pt-4">
-        <h4>Sisa waktu pembayaran :</h4>
-            <div id="ten-countdown" class="timer"></div>
-        </div>
-        <h6>Upload bukti pembayaran :</h6>
+        <h4 class="text-center mt-5">Sisa waktu pembayaran :</h4>
+        <div id="ten-countdown" class="timer text-center" style="font-size: 50px;"></div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text">Upload</span>
