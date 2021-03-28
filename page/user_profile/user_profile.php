@@ -13,30 +13,30 @@
                                 <li class="breadcrumb-item active">Informasi Profile</li>
                             </ol>
                             <form method="POST">
-                                <div class="form-group row">
-                                    <label for="nama" class="col-sm-2 col-form-label">Nama</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control w-25 bg-light" id="nama" name="nama" value="<?= $tampil["nama"]; ?>">
-                                    </div>
+                                <img src="assets/profile/<?= $tampil['gambar_profile']; ?>" alt="" width="200px" height="200px" class="rounded-circle border border-dark mx-auto d-block">
+                                <div class="form-group">
+                                  <label for="gambar">Gambar Produk</label><br>
+                                  <div class="d-flex">
+                                    <input type="file" class="form-control-file" id="gambar" name="gambar">
+                                  </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="tempat_lahir" class="col-sm-2 col-form-label">Tempat Lahir</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control w-25 bg-light" id="tempat_lahir" name="tempat_lahir" value="<?= $tampil["tempat_lahir"]; ?>">
-                                    </div>
+                                <div class="form-group">
+                                    <label for="nama">Nama</label>
+                                    <input type="text" class="form-control" id="nama" name="nama" value="<?= $tampil["nama"]; ?>">
                                 </div>
-                                <div class="form-group row">
-                                    <label for="tanggal_lahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
-                                    <div class="col-sm-10">
-                                        <input type="date" class="form-control w-25 bg-light" id="tanggal_lahir" name="tanggal_lahir" value="<?= $tampil["tanggal_lahir"]; ?>">
-                                    </div>
+                                <div class="form-group">
+                                    <label for="tempat_lahir">Tempat Lahir</label>
+                                    <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" value="<?= $tampil["tempat_lahir"]; ?>">
                                 </div>
-                                <div class="form-group row">
-                                    <label for="gender" class="col-sm-2 col-form-label">Jenis Kelamin</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control w-25 bg-light" id="gender" name="gender" value="<?= $tampil["gender"]; ?>">
-                                    </div>
+                                <div class="form-group">
+                                    <label for="tanggal_lahir">Tanggal Lahir</label>
+                                    <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" value="<?= $tampil["tanggal_lahir"]; ?>">
                                 </div>
+                                <div class="form-group">
+                                    <label for="gender">Jenis Kelamin</label>
+                                    <input type="text" class="form-control" id="gender" name="gender" value="<?= $tampil["gender"]; ?>">
+                                </div>
+                                <input type="hidden" name="gambarLama" value="<?= $tampil["gambar_profile"]; ?>">
                                 <button type="submit" class="btn btn-primary" name="update">Update</button>
                             </form>
                     </div>
@@ -44,13 +44,71 @@
 
                 <?php 
 
+                      function upload() {
+                        $namaFile = $_FILES['gambar']['name'];
+                        $ukuranFiles = $_FILES['gambar']['size'];
+                        $error = $_FILES['gambar']['error'];
+                        $tmpName = $_FILES['gambar']['tmp_name'];
+
+                        // cek gambar upload
+                        if ($error === 4) {
+                          echo '
+                            <script>
+                              alert("pilih gambar terlebih dahulu");
+                            </script>
+                          ';
+                          return false;
+                        }
+
+                        // cek type file
+                        $extensiGambarValid = ['jpg','jpeg','png'];
+                        $extensiGambar = explode('.', $namaFile);
+                        $extensiGambar = strtolower(end($extensiGambar));
+
+                        if (!in_array($extensiGambar, $extensiGambarValid)) {
+                          echo '
+                            <script>
+                              alert("yang anda upload bukan gambar");
+                            </script>
+                          ';
+                          return false;
+                        }
+
+                        // cek ukuran
+                        if ($ukuranFiles > 1000000) {
+                          echo '
+                            <script>
+                              alert("ukuran gambar terlalu besar");
+                            </script>
+                          ';
+                          return false;
+                        }
+
+                        // generate nama
+                        $namaFileBaru = uniqid();
+                        $namaFileBaru .= '.';
+                        $namaFileBaru .= $extensiGambar;
+
+
+                        // lolos cek
+                        move_uploaded_file($tmpName, 'assets/profile/' . $namaFileBaru);
+                        return $namaFileBaru;
+                      }
+
                       if (isset($_POST['update'])) {
                         $nama = $_POST['nama'];
                         $tempat_lahir = $_POST['tempat_lahir'];
                         $tanggal_lahir = $_POST['tanggal_lahir'];
                         $gender = $_POST['gender'];
+                        $gambarLama = $_POST['gambarLama'];
 
-                        $update = $myPDO->prepare("UPDATE profile SET nama = '$nama', tempat_lahir = '$tempat_lahir', tanggal_lahir = '$tanggal_lahir', gender = '$gender' where user_id = '$id' ");
+                        if ($_FILES['gambar']['error'] === 4) {
+                          $gambar = $gambarLama;
+                        } else  {
+                          $gambar = upload();
+                        }
+
+                        $update = $myPDO->prepare("UPDATE profile SET nama = '$nama', tempat_lahir = '$tempat_lahir', tanggal_lahir = '$tanggal_lahir', gender = '$gender', gambar_profile = '$gambar' where user_id = '$id' ");
 
                         try {
 

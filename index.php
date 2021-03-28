@@ -46,7 +46,14 @@ if (!isset($_SESSION["login"])) {
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $_SESSION["nama_user"]; ?></span>
-                    <img class="rounded-circle" src="assets/img/undraw_profile.svg" style="height: 2rem; width: 2rem;">
+                    <?php 
+                      $id = $_SESSION["id"];
+                      $sql = $myPDO->prepare("select * from profile where user_id = '$id'");
+                      // $tampil = $sql->fetch_assoc();
+                      $sql->execute();
+                      $tampil = $sql->fetch(PDO::FETCH_ASSOC);
+                    ?>
+                    <img class="rounded-circle" src="assets/profile/<?= $tampil['gambar_profile']; ?>" style="height: 2rem; width: 2rem;">
                     </a>
                     <!-- <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="userDropdown">
                         <a class="dropdown-item" href="?page=profile">Informasi User</a>
@@ -249,8 +256,8 @@ if (!isset($_SESSION["login"])) {
                         if ($aksi == "") {
                             include "page/laporan_penjualan/laporan.php";
                         }
-                        if ($aksi == "view-detail") {
-                            include "page/laporan_penjualan/view-detail.php";
+                        if ($aksi == "view") {
+                            include "page/laporan_penjualan/view.php";
                         }
                         
                     
@@ -291,6 +298,10 @@ if (!isset($_SESSION["login"])) {
 
                     if ($page == "") {
                         include "home.php";
+                    }
+
+                    if ($page == "cetak") {
+                        include "cetak.php";
                     }
                     
                 ?>

@@ -13,10 +13,17 @@
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">Kategori Toko</li>
                         </ol>
-                          <form method="POST">
+                          <form method="POST" enctype="multipart/form-data">
                             <div class="form-group">
                               <label for="kode">Kode Produk</label>
                               <input type="text" class="form-control" id="kode" aria-describedby="emailHelp" placeholder="Masukkan kode kategori barang" name="kode" value="<?= $tampil["kode_produk"]; ?>">
+                            </div>
+                            <div class="form-group">
+                              <label for="gambar">Gambar Produk</label><br>
+                              <div class="d-flex">
+                                <img src="assets/produk/<?= $tampil['gambar_produk']; ?>" alt="" width="30px">
+                                <input type="file" class="form-control-file ml-3" id="gambar" name="gambar">
+                              </div>
                             </div>
                             <div class="form-group">
                               <label for="nama">Nama Barang</label>
@@ -55,6 +62,7 @@
                               <label for="hargaJual">Harga Jual</label>
                               <input type="text" class="form-control" id="hargaJual" aria-describedby="emailHelp" placeholder="Masukkan harga jual" name="hargaJual" value="<?= $tampil["harga_jual"]; ?>">
                             </div>
+                            <input type="hidden" name="gambarLama" value="<?= $tampil["gambar_produk"]; ?>">
                             <button type="submit" class="btn btn-primary" name="update">Update</button>
                           </form>
                       </div>
@@ -62,6 +70,57 @@
 
 
                   <?php 
+
+                       function upload() {
+                        $namaFile = $_FILES['gambar']['name'];
+                        $ukuranFiles = $_FILES['gambar']['size'];
+                        $error = $_FILES['gambar']['error'];
+                        $tmpName = $_FILES['gambar']['tmp_name'];
+
+                        // cek gambar upload
+                        if ($error === 4) {
+                          echo '
+                            <script>
+                              alert("pilih gambar terlebih dahulu");
+                            </script>
+                          ';
+                          return false;
+                        }
+
+                        // cek type file
+                        $extensiGambarValid = ['jpg','jpeg','png'];
+                        $extensiGambar = explode('.', $namaFile);
+                        $extensiGambar = strtolower(end($extensiGambar));
+
+                        if (!in_array($extensiGambar, $extensiGambarValid)) {
+                          echo '
+                            <script>
+                              alert("yang anda upload bukan gambar");
+                            </script>
+                          ';
+                          return false;
+                        }
+
+                        // cek ukuran
+                        if ($ukuranFiles > 1000000) {
+                          echo '
+                            <script>
+                              alert("ukuran gambar terlalu besar");
+                            </script>
+                          ';
+                          return false;
+                        }
+
+                        // generate nama
+                        $namaFileBaru = uniqid();
+                        $namaFileBaru .= '.';
+                        $namaFileBaru .= $extensiGambar;
+
+
+                        // lolos cek
+                        move_uploaded_file($tmpName, 'assets/produk/' . $namaFileBaru);
+                        return $namaFileBaru;
+                      }
 
                       if (isset($_POST['update'])) {
                         $kode = $_POST['kode'];
@@ -71,10 +130,19 @@
                         $stok = $_POST['stok'];
                         $hargaBeli = $_POST['hargaBeli'];
                         $hargaJual = $_POST['hargaJual'];
+                        $gambarLama = $_POST['gambarLama'];
+
+                        // cek user apakah upload gambar atau tidak
+                        if ($_FILES['gambar']['error'] === 4) {
+                          $gambar = $gambarLama;
+                        } else  {
+                          $gambar = upload();
+                        }
+
 
                         // $update = $conn->query("UPDATE produk SET nama = '$nama', harga_jual = '$hargaJual', deskripsi = '$deskripsi', stok = '$stok', produk_kategori_id = '$kategori', kode_produk = '$kode', harga_beli = '$hargaBeli' WHERE id = '$id' ");
 
-                        $sql = $myPDO->prepare("UPDATE produk SET nama = '$nama', harga_jual = '$hargaJual', deskripsi = '$deskripsi', stok = '$stok', produk_kategori_id = '$kategori', kode_produk = '$kode', harga_beli = '$hargaBeli' WHERE id = '$id' ");
+                        $sql = $myPDO->prepare("UPDATE produk SET nama = '$nama', harga_jual = '$hargaJual', deskripsi = '$deskripsi', stok = '$stok', produk_kategori_id = '$kategori', kode_produk = '$kode', harga_beli = '$hargaBeli', gambar_produk = '$gambar' WHERE id = '$id' ");
                         
                         try {
 

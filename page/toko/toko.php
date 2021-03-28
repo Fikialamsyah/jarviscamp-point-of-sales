@@ -9,7 +9,8 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <a href="?page=toko&aksi=tambah" class="btn btn-secondary mb-2">Tambah Data</a>
-                                    <table class="table table-striped">
+                                    <!-- <table class="table table-striped"> -->
+                                    <table id="dtHorizontalExample" class="table table-striped table-bordered table-sm text-center" cellspacing="0" width="100%">
                                       <thead class="thead-light">
                                         <tr>
                                             <th>No</th>

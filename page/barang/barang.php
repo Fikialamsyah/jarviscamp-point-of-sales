@@ -9,11 +9,13 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <a href="?page=barang&aksi=tambah" class="btn btn-secondary mb-2">Tambah Data</a>
-                                    <table class="table table-striped">
+                                    <!-- <table class="table table-striped table-bordered text-center "> -->
+                                    <table id="dtHorizontalExample" class="table table-striped table-bordered table-sm text-center" cellspacing="0" width="100%">
                                       <thead class="thead-light">
                                         <tr>
                                             <th>No</th>
-                                            <th>Kode Produk</th>
+                                            <th>Kode</th>
+                                            <th>Gambar</th>
                                             <th>Nama</th>
                                             <th>Deskripsi</th>
                                             <th>Kategori</th>
@@ -36,8 +38,11 @@
                                             
                                             <tr>
                                                 <td><?= $no++;?></td>
-                                                <td><?= $row['kode_produk']?></td>
-                                                <td><?= $row['nama']; ?></td>
+                                                <td width="5%"><?= $row['kode_produk']?></td>
+                                                <td>
+                                                    <img src="assets/produk/<?= $row['gambar_produk'] ?>" alt="" width="30px">
+                                                </td>
+                                                <td width="15%"><?= $row['nama']; ?></td>
                                                 <td><?= $row['deskripsi']; ?></td>
                                                 <td><?= $row['produk_kategori_id']; ?></td>
                                                 <td><?= $row['stok']; ?></td>

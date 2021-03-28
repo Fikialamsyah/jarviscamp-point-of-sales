@@ -45,6 +45,17 @@
                                 <?php } ?>
                             </select>
                         </div>
+                        <div class="form-group">
+                                <?php 
+                                    $sql = $myPDO->prepare("SELECT * FROM produk");
+                                    $sql->execute();
+                                    while($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+                                ?>
+                            <button><img src="assets/produk/<?= $row['gambar_produk']; ?>" alt="" width="50px"></button>
+                                <?php 
+                                    }
+                                ?>
+                        </div>
                     </div>
                     <div class="col-md-7">
                         <div class="form-group row mt-4">
@@ -137,18 +148,48 @@
                         </tbody>
                     </table>
                 </div>
+                <form action="" method="POST" id="submit-button">
                 <div class="form-group row mt-4">
-                    <label for="" class="col-sm-3 col-form-label">Total Harga :</label>
+                    <label for="total-harga" class="col-sm-3 col-form-label">Total Harga :</label>
                     <div class="input-group col-sm-9">
                         <div class="input-group-prepend">
                             <div class="input-group-text">Rp.</div>
                         </div>
-                        <input type="text" class="form-control" id="" readonly value="<?= $total_bayar; ?>">
+                        <input type="text" class="form-control total-harga" id="total-harga" name="total-harga" readonly value="<?= $total_bayar; ?>">
                     </div>
                 </div>
-                <button type="button" class="col-md-12 btn btn-success" data-toggle="modal" data-target="#exampleModal">
-                  Bayar
+                <div class="form-group row mt-4">
+                    <label for="diskon-akhir" class="col-sm-3 col-form-label">Diskon :</label>
+                    <div class="input-group col-sm-9">
+                        <input type="number" class="form-control diskon-akhir" id="diskon-akhir" onkeyup="totalBayar()" name="diskon-akhir">
+                    </div>
+                </div>
+                <div class="form-group row mt-4">
+                    <label for="total_bayar" class="col-sm-3 col-form-label">Total Bayar :</label>
+                    <div class="input-group col-sm-9">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Rp.</div>
+                        </div>
+                        <input type="text" class="form-control total-bayar" id="total_bayar" name="total_bayar" readonly>
+                    </div>
+                </div>
+                <button type="submit" class="col-md-12 btn btn-danger" data-toggle="modal" data-target="#exampleModal" name="bayar">
+                  Simpan Data Pembayaran
                 </button>
+                <button type="button" class="col-md-12 btn btn-success mt-2" data-toggle="modal" data-target="#exampleModal">
+                  Pilih Metode Pembayaran
+                </button>
+                </form>
+                <?php 
+                    if (isset($_POST["bayar"])) {
+                        $sub_total = $_POST['total-harga'];
+                        $diskon_akhir = $_POST['diskon-akhir'];
+                        $total_akhir = $_POST['total_bayar'];
+
+                        $tambah = $myPDO->prepare("INSERT INTO total_bayar (id, kode_penjualan, sub_total, diskon, total) VALUES (default, '$kode', '$sub_total', '$diskon_akhir', '$total_akhir')");
+                        $tambah->execute();
+                    }
+                 ?>
             </div>
         </div>
     </div>
@@ -157,44 +198,139 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Pembayaran</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Total : <?= $total_akhir; ?></h5>
       </div>
-      <div class="modal-body">
-        <div class="d-flex justify-content-between align-items-center">
-            <h5 class="total-amount">Total harga</h5>
-            <div class="amount-container"><span class="amount-text"><span class="dollar-sign">Rp.</span><?= number_format($total_bayar); ?></span></div>
-        </div>
-        <div class="pt-4"> 
-        <label class="d-flex justify-content-between"> 
-        <span class="label-text label-text-cc-number">Metode Pembayaran :</span>
-        </label> 
-        <select id="metode_pem" class="form-control">
-            <option value="">Mandiri -- 0110219085</option>
-            <option value="">BCA -- 0110219085</option>
-            <option value="">BRI -- 0110219085</option>
-        </select>
-        </div>
-        <h4 class="text-center mt-5">Sisa waktu pembayaran :</h4>
-        <div id="ten-countdown" class="timer text-center" style="font-size: 50px;"></div>
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Upload</span>
+    <!-- <div class="modal-body"> -->
+        <!-- <div class="row"> -->
+    <!-- <div class="col-lg-7 mx-auto"> -->
+      <div class="bg-white rounded-lg shadow-sm p-3">
+        <!-- Credit card form tabs -->
+        <ul role="tablist" class="nav bg-light nav-pills rounded-pill nav-fill mb-3">
+          <li class="nav-item">
+            <a data-toggle="pill" href="#nav-tab-card" class="nav-link active rounded-pill">
+                                <i class="fa fa-credit-card"></i>
+                                Kartu Kredit
+                            </a>
+          </li>
+          <li class="nav-item">
+            <a data-toggle="pill" href="#nav-tab-paypal" class="nav-link rounded-pill">
+                                <i class="fa fa-paypal"></i>
+                                Cash
+                            </a>
+          </li>
+          <li class="nav-item">
+            <a data-toggle="pill" href="#nav-tab-bank" class="nav-link rounded-pill">
+                                <i class="fa fa-university"></i>
+                                 Transfer Bank
+                             </a>
+          </li>
+        </ul>
+        <!-- End -->
+
+
+        <!-- Credit card form content -->
+        <div class="tab-content">
+
+          <!-- credit card info-->
+          <div id="nav-tab-card" class="tab-pane fade show active">
+            <!-- <p class="alert alert-success">Some text success or error</p> -->
+            <form role="form">
+              <div class="form-group">
+                <label for="username">Nama Lengkap (Kartu)</label>
+                <input type="text" name="username" placeholder="Jason Doe" required class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="cardNumber">Nomer Kartu</label>
+                <div class="input-group">
+                  <input type="text" name="cardNumber" placeholder="Your card number" class="form-control" required>
+                  <div class="input-group-append">
+                    <span class="input-group-text text-muted">
+                                                <i class="fa fa-cc-visa mx-1"></i>
+                                                <i class="fa fa-cc-amex mx-1"></i>
+                                                <i class="fa fa-cc-mastercard mx-1"></i>
+                                            </span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-8">
+                  <div class="form-group">
+                    <label><span class="hidden-xs">Kadaluarsa</span></label>
+                    <div class="input-group">
+                      <input type="number" placeholder="MM" name="" class="form-control" required>
+                      <input type="number" placeholder="YY" name="" class="form-control" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group mb-4">
+                    <label data-toggle="tooltip" title="Three-digits code on the back of your card">CVV
+                                                <i class="fa fa-question-circle"></i>
+                                            </label>
+                    <input type="text" required class="form-control">
+                  </div>
+                </div>
+
+
+
+              </div>
+              <button type="button" class="subscribe btn btn-primary btn-block rounded-pill shadow-sm" onclick="pindahLokasi()"> Confirm  </button>
+            </form>
           </div>
-          <div class="custom-file">
-            <input type="file" class="custom-file-input" id="inputGroupFile01">
-            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+          <!-- End -->
+
+          <!-- Paypal info -->
+          <div id="nav-tab-paypal" class="tab-pane fade">
+            <p>Masukkan Nominal</p>
+            <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Rp.</div>
+                        </div>
+                        <input type="number" class="form-control" id="">
+            </div>
+            <p class="mt-2">
+              <button type="button" class="btn btn-primary rounded-pill" onclick="pindahLokasi()"><i class="fa fa-paypal mr-2"></i> Bayar</button>
+            </p>
           </div>
+          <!-- End -->
+
+          <!-- bank transfer info -->
+          <div id="nav-tab-bank" class="tab-pane fade">
+            <!-- <h6>Bank account details</h6>
+            <dl>
+              <dt>Bank</dt>
+              <dd> THE WORLD BANK</dd>
+            </dl>
+            <dl>
+              <dt>Account number</dt>
+              <dd>7775877975</dd>
+            </dl>
+            <dl>
+              <dt>IBAN</dt>
+              <dd>CZ7775877975656</dd>
+            </dl>
+            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p> -->
+            <div class="form-group "> <label for="Select Your Bank">
+                                <h6>Select your Bank</h6>
+                            </label> <select class="form-control" id="ccmonth">
+                                <option value="" selected disabled>--Please select your Bank--</option>
+                                <option>BCA - 138000067881975</option>
+                                <option>Mandiri - 276000054367</option>
+                            </select> </div>
+                        <div class="form-group">
+                            <p> <button type="button" class="btn btn-primary" onclick="pindahLokasi()"><i class="fas fa-mobile-alt mr-2"></i>Proses Pembayaran</button> </p>
+                        </div>
+          </div>
+          <!-- End -->
         </div>
+        <!-- End -->
 
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="informasi()">Kirim</button>
-      </div>
-    </div>
+    <!-- </div> -->
+  <!-- </div> -->
+    <!-- </div> -->
   </div>
 </div>
 
@@ -245,6 +381,20 @@
 
     function informasi() {
         alert("Data sudah dikirim");
+        window.location.href="index.php";
+    }
+
+    function totalBayar() {
+        let total_harga = document.querySelector(".total-harga").value;
+        let diskon_akhir = document.querySelector(".diskon-akhir").value;
+
+        let potongan_akhir = total_harga * parseFloat(diskon_akhir) / parseInt(100);
+        if (!isNaN(potongan_akhir)) {
+            total_bayar = document.querySelector(".total-bayar").value = total_harga - potongan_akhir;
+        }
+    }
+
+    function pindahLokasi(){
         window.location.href="index.php";
     }
 

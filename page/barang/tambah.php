@@ -4,10 +4,14 @@
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">Data Produk</li>
                         </ol>
-                          <form method="POST">
+                          <form method="POST" enctype="multipart/form-data">
                             <div class="form-group">
                               <label for="kode">Kode Produk</label>
                               <input type="text" class="form-control" id="kode" aria-describedby="emailHelp" placeholder="Masukkan kode kategori barang" name="kode">
+                            </div>
+                            <div class="form-group">
+                              <label for="gambar">Gambar Produk</label>
+                              <input type="file" class="form-control-file" id="gambar" name="gambar">
                             </div>
                             <div class="form-group">
                               <label for="nama">Nama Barang</label>
@@ -56,6 +60,57 @@
 
                   <?php 
 
+                      function upload() {
+                        $namaFile = $_FILES['gambar']['name'];
+                        $ukuranFiles = $_FILES['gambar']['size'];
+                        $error = $_FILES['gambar']['error'];
+                        $tmpName = $_FILES['gambar']['tmp_name'];
+
+                        // cek gambar upload
+                        if ($error === 4) {
+                          echo '
+                            <script>
+                              alert("pilih gambar terlebih dahulu");
+                            </script>
+                          ';
+                          return false;
+                        }
+
+                        // cek type file
+                        $extensiGambarValid = ['jpg','jpeg','png'];
+                        $extensiGambar = explode('.', $namaFile);
+                        $extensiGambar = strtolower(end($extensiGambar));
+
+                        if (!in_array($extensiGambar, $extensiGambarValid)) {
+                          echo '
+                            <script>
+                              alert("yang anda upload bukan gambar");
+                            </script>
+                          ';
+                          return false;
+                        }
+
+                        // cek ukuran
+                        if ($ukuranFiles > 1000000) {
+                          echo '
+                            <script>
+                              alert("ukuran gambar terlalu besar");
+                            </script>
+                          ';
+                          return false;
+                        }
+
+                        // generate nama
+                        $namaFileBaru = uniqid();
+                        $namaFileBaru .= '.';
+                        $namaFileBaru .= $extensiGambar;
+
+
+                        // lolos cek
+                        move_uploaded_file($tmpName, 'assets/produk/' . $namaFileBaru);
+                        return $namaFileBaru;
+                      }
+
                       if (isset($_POST['simpan'])) {
                         $kode = $_POST['kode'];
                         $nama = $_POST['nama'];
@@ -65,8 +120,13 @@
                         $hargaBeli = $_POST['hargaBeli'];
                         $hargaJual = $_POST['hargaJual'];
 
+                        $gambar = upload();
+                        if (!$gambar) {
+                          return false;
+                        }
+
                         // $tambah = $conn->query("insert into produk (id, nama, harga_jual, deskripsi, stok, produk_kategori_id, kode_produk, harga_beli) values ('', '$nama', '$hargaJual', '$deskripsi', '$stok', '$kategori', '$kode', '$hargaBeli')");
-                        $sql = $myPDO->prepare("insert into produk (id, nama, harga_jual, deskripsi, stok, produk_kategori_id, kode_produk, harga_beli) values (default, '$nama', '$hargaJual', '$deskripsi', '$stok', '$kategori', '$kode', '$hargaBeli')");
+                        $sql = $myPDO->prepare("insert into produk (id, nama, harga_jual, deskripsi, stok, produk_kategori_id, kode_produk, harga_beli, gambar_produk) values (default, '$nama', '$hargaJual', '$deskripsi', '$stok', '$kategori', '$kode', '$hargaBeli', '$gambar')");
 
                         try {
 

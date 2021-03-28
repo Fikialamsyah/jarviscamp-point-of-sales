@@ -1,7 +1,7 @@
 <?php 
 	
 	function kode_penjualan($length) {
-		$data = "1234567890";
+		$data = "12345";
 		$string = 'JARVIS-';
 
 		for ($i = 0; $i < $length; $i++){
@@ -12,5 +12,5 @@
 		return $string;
 	}
 
-	$kode = kode_penjualan(10);
+	$kode = kode_penjualan(5);
  ?>
