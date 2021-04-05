@@ -16,8 +16,9 @@
         $password = $_POST["password"];
         $password2 = $_POST["password"];
         $email = $_POST["email"];
+        $user = '"user"';
 
-        $query1 = $myPDO->prepare("SELECT username FROM user WHERE username = '$username");
+        $query1 = $myPDO->prepare("SELECT username FROM $user WHERE username = '$username' ");
         $query1->execute();
 
         $result = $query1->fetch(PDO::FETCH_ASSOC);
@@ -49,10 +50,11 @@
 
         try {
             $query2->execute();
-            echo "
+            echo '
                 <script>
-                alert('user baru berhasil ditambahkan');
-                </script>";
+                alert("user baru berhasil ditambahkan");
+                window.location.href="login.php";
+                </script>';
             // header("Location: index.php");
         }
         catch(PDOException $e) {

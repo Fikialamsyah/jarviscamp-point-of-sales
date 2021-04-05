@@ -37,7 +37,9 @@
                                                 <td><?= $no++;?></td>
                                                 <td><?= $row['username']?></td>
                                                 <td><?= $row['email']?></td>
-                                                <td><?= $row['password']?></td>
+                                                <td>
+                                                    <input type="Password" name="" value="<?= $row['password']?>" class="form-control" readonly style="border: 0;">
+                                                </td>
                                                 <td><?= $row['created_at']?></td>
                                                 <td><?= $row['updated_at']?></td>
                                                 <td>

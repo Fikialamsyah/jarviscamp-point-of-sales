@@ -12,6 +12,9 @@
 
         $tambah = $myPDO->prepare("INSERT INTO penjualan (id, kode_penjualan, tgl_penjualan, kode_produk, jumlah, diskon, potongan, total) VALUES (default, '$kode', '$tgl', '$kode_produk', '$jumlah', '$diskon', '$potongan', '$total')");
         $tambah->execute();
+
+        $kurang = $myPDO->prepare("UPDATE produk SET stok = stok - $jumlah WHERE kode_produk = '$kode_produk' ");
+        $kurang->execute();
     }
 ?>
 
@@ -24,40 +27,38 @@
         </ol>
         <div class="card mb-4 shadow rounded">
             <div class="card-body">
-                <h2>Data Barang</h2>
+                <div class="d-flex justify-content-between">
+                    <h2>Data Barang</h2>
+                    <!-- <div class="form-group">
+                        <input type="text" class="form-control-plaintext" readonly value="">
+                    </div> -->
+                    <span class="align-self-center text-mute"><?= $kode; ?></span>
+                </div>
                 <hr>
                 <form method="POST">
-                <div class="row">
-                    <div class="col-md-5">
                         <div class="form-group">
-                            <input type="text" class="form-control-plaintext" readonly value="<?= $kode; ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="kode_barang">Kode Barang</label>
-                            <select id="kode_barang" class="form-control" name="kode_produk" onchange="hitung()">
-                                <option>--Pilih--</option>
+                            <!-- <label for="kode_barang">Pilih Barang</label> -->
+                            <select class="image-picker show-html form-control" id="kode_barang" name="kode_produk" onchange="hitung()">
+                                <option value=""></option>
                                 <?php 
                                     $sql = $myPDO->prepare("SELECT * FROM produk");
                                     $sql->execute();
                                     while($row = $sql->fetch(PDO::FETCH_ASSOC)) {
                                 ?>
-                                <option value="<?= $row["kode_produk"] ?>"><?= $row["nama"] ?></option>
-                                <?php } ?>
+                                <option data-img-src="assets/produk/<?= $row["gambar_produk"]; ?>" value="<?= $row['kode_produk']; ?>"><?= $row['nama']; ?></option>
+                                <?php 
+                                    } 
+                                ?>
                             </select>
                         </div>
-                        <div class="form-group">
-                                <?php 
-                                    $sql = $myPDO->prepare("SELECT * FROM produk");
-                                    $sql->execute();
-                                    while($row = $sql->fetch(PDO::FETCH_ASSOC)) {
-                                ?>
-                            <button><img src="assets/produk/<?= $row['gambar_produk']; ?>" alt="" width="50px"></button>
-                                <?php 
-                                    }
-                                ?>
+                        <!-- List group -->
+                        <hr>
+                        <div class="form-group row mt-4">
+                            <label for="kode" class="col-sm-5 col-form-label">Kode Barang Barang :</label>
+                            <div class=" input-group col-sm-7">
+                                <input type="text" class="form-control" id="kode" name="kode">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-7">
                         <div class="form-group row mt-4">
                             <label for="harga_barang" class="col-sm-5 col-form-label">Harga Barang :</label>
                             <div class=" input-group col-sm-7">
@@ -97,17 +98,15 @@
                                 <input type="number" class="form-control" id="sub_total" name="sub_total">
                             </div>
                         </div>
-                    </div>
                     <!-- <button type="submit" class="col-md-12 btn btn-primary" name="tambah">Tambahkan</button> -->
                     <input type="submit" class="col-md-12 btn btn-primary" name="tambah" value="Tambahkan">
-                </div>
                 </form>
             </div>
         </div>
 
         <div class="card my-4 shadow rounded">
             <div class="card-body">
-                <h2>Daftar Belanja</h2>
+                <h2>Keranjang Belanja</h2>
                 <hr>
                 <div class="table-responsive">
                     <table class="table table-striped">
@@ -155,13 +154,13 @@
                         <div class="input-group-prepend">
                             <div class="input-group-text">Rp.</div>
                         </div>
-                        <input type="text" class="form-control total-harga" id="total-harga" name="total-harga" readonly value="<?= $total_bayar; ?>">
+                        <input type="text" class="form-control total-harga" id="1" name="total-harga" readonly value="<?= $total_bayar; ?>">
                     </div>
                 </div>
                 <div class="form-group row mt-4">
                     <label for="diskon-akhir" class="col-sm-3 col-form-label">Diskon :</label>
                     <div class="input-group col-sm-9">
-                        <input type="number" class="form-control diskon-akhir" id="diskon-akhir" onkeyup="totalBayar()" name="diskon-akhir">
+                        <input type="number" class="form-control diskon-akhir" id="2" onkeyup="totalBayar()" name="diskon-akhir">
                     </div>
                 </div>
                 <div class="form-group row mt-4">
@@ -170,25 +169,39 @@
                         <div class="input-group-prepend">
                             <div class="input-group-text">Rp.</div>
                         </div>
-                        <input type="text" class="form-control total-bayar" id="total_bayar" name="total_bayar" readonly>
+                        <input type="text" class="form-control total-bayar" id="3" name="total_bayar" readonly>
                     </div>
                 </div>
-                <button type="submit" class="col-md-12 btn btn-danger" data-toggle="modal" data-target="#exampleModal" name="bayar">
+                <input type="text" name="kodepj" id="kode-pj" value="<?= $kode ?>" readonly style="visibility: hidden;"><br>
+                <button type="button" class="col-md-12 btn btn-danger" name="bayar" id="btnBayar">
                   Simpan Data Pembayaran
                 </button>
-                <button type="button" class="col-md-12 btn btn-success mt-2" data-toggle="modal" data-target="#exampleModal">
+<!--                 <button type="button" class="col-md-12 btn btn-success mt-2" data-toggle="modal" data-target="#exampleModal">
                   Pilih Metode Pembayaran
-                </button>
+                </button> -->
                 </form>
+                <span id="response"></span>
                 <?php 
-                    if (isset($_POST["bayar"])) {
-                        $sub_total = $_POST['total-harga'];
-                        $diskon_akhir = $_POST['diskon-akhir'];
-                        $total_akhir = $_POST['total_bayar'];
+                    // if (isset($_POST["bayar"])) {
+                    //     $sub_total = $_POST['total-harga'];
+                    //     $diskon_akhir = $_POST['diskon-akhir'];
+                    //     $total_akhir = $_POST['total_bayar'];
 
-                        $tambah = $myPDO->prepare("INSERT INTO total_bayar (id, kode_penjualan, sub_total, diskon, total) VALUES (default, '$kode', '$sub_total', '$diskon_akhir', '$total_akhir')");
-                        $tambah->execute();
-                    }
+                    //     $tambah = $myPDO->prepare("INSERT INTO total_bayar (id, kode_penjualan, sub_total, diskon, total) VALUES (default, '$kode', '$sub_total', '$diskon_akhir', '$total_akhir')");
+                        
+                    //     try {
+
+                    //       $tambah->execute();
+                    //       echo '
+                    //         <script type="text/javascript">
+                    //           alert("Pembayaran Berhasil");
+                    //           window.location.href="index.php";
+                    //         </script>';
+                    //     }
+                    //     catch(PDOException $e) {
+                    //         echo $e->getMessage();
+                    //     }
+                    // }
                  ?>
             </div>
         </div>
@@ -199,7 +212,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
     <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Total : <?= $total_akhir; ?></h5>
+        <h5 class="modal-title nominal-title" id="exampleModalLabel">Pilih Metode Pembayaran :</h5>
       </div>
     <!-- <div class="modal-body"> -->
         <!-- <div class="row"> -->
@@ -238,12 +251,12 @@
             <form role="form">
               <div class="form-group">
                 <label for="username">Nama Lengkap (Kartu)</label>
-                <input type="text" name="username" placeholder="Jason Doe" required class="form-control">
+                <input type="text" name="username" placeholder="Jason Doe"  class="form-control">
               </div>
               <div class="form-group">
                 <label for="cardNumber">Nomer Kartu</label>
                 <div class="input-group">
-                  <input type="text" name="cardNumber" placeholder="Your card number" class="form-control" required>
+                  <input type="text" name="cardNumber" placeholder="Your card number" class="form-control" >
                   <div class="input-group-append">
                     <span class="input-group-text text-muted">
                                                 <i class="fa fa-cc-visa mx-1"></i>
@@ -258,8 +271,8 @@
                   <div class="form-group">
                     <label><span class="hidden-xs">Kadaluarsa</span></label>
                     <div class="input-group">
-                      <input type="number" placeholder="MM" name="" class="form-control" required>
-                      <input type="number" placeholder="YY" name="" class="form-control" required>
+                      <input type="number" placeholder="MM" name="" class="form-control" >
+                      <input type="number" placeholder="YY" name="" class="form-control" >
                     </div>
                   </div>
                 </div>
@@ -334,6 +347,8 @@
   </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="js/image-picker.min.js"></script>
 <script type="text/javascript">
     
     let detail_barang = null;
@@ -353,6 +368,7 @@
                 hitungSubTotal(detail_barang);
             })
         }
+        let kode = document.querySelector("#kode").value = kode_barcode;
     }
 
     function hitungSubTotal(detail_barang_sekarang) {
@@ -399,34 +415,136 @@
     }
 
     
-    function countdown( elementName, minutes, seconds )
-{
-    var element, endTime, hours, mins, msLeft, time;
+//     function countdown( elementName, minutes, seconds )
+//     {
+//     var element, endTime, hours, mins, msLeft, time;
 
-    function twoDigits( n )
-    {
-        return (n <= 9 ? "0" + n : n);
-    }
+//     function twoDigits( n )
+//     {
+//         return (n <= 9 ? "0" + n : n);
+//     }
 
-    function updateTimer()
-    {
-        msLeft = endTime - (+new Date);
-        if ( msLeft < 1000 ) {
-            element.innerHTML = "Time is up!";
-        } else {
-            time = new Date( msLeft );
-            hours = time.getUTCHours();
-            mins = time.getUTCMinutes();
-            element.innerHTML = (hours ? hours + ':' + twoDigits( mins ) : mins) + ':' + twoDigits( time.getUTCSeconds() );
-            setTimeout( updateTimer, time.getUTCMilliseconds() + 500 );
-        }
-    }
+//     function updateTimer()
+//     {
+//         msLeft = endTime - (+new Date);
+//         if ( msLeft < 1000 ) {
+//             element.innerHTML = "Time is up!";
+//         } else {
+//             time = new Date( msLeft );
+//             hours = time.getUTCHours();
+//             mins = time.getUTCMinutes();
+//             element.innerHTML = (hours ? hours + ':' + twoDigits( mins ) : mins) + ':' + twoDigits( time.getUTCSeconds() );
+//             setTimeout( updateTimer, time.getUTCMilliseconds() + 500 );
+//         }
+//     }
 
-    element = document.getElementById( elementName );
-    endTime = (+new Date) + 1000 * (60*minutes + seconds) + 500;
-    updateTimer();
-}
+//     element = document.getElementById( elementName );
+//     endTime = (+new Date) + 1000 * (60*minutes + seconds) + 500;
+//     updateTimer();
+//     }
 
-countdown( "ten-countdown", 10, 0 );
+// countdown( "ten-countdown", 10, 0 );
+        $('.image-picker').imagepicker();
+
+        // $("#submit-button").on("submit", function(e){
+        //     $("#exampleModal").show();
+        //     e.preventDefault();
+        // })
+
+        // $(document).ready(function() {
+        //     $('#butBayar').on('click', function() {
+        //     // $("#butsave").attr("disabled", "disabled");
+        //     let kodepj = $('#kodepj').val();
+        //     let total_harga = $('#total-harga').val();
+        //     let diskon = $('#diskon-akhir').val();
+        //     let total = $('#total_bayar').val();
+        //     if(total_harga!="" && diskon!="" && total!=""){
+        //         $.ajax({
+        //             url: "page/penjualan/simpan-data.php",
+        //             type: "POST",
+        //             data: {
+        //                 kode: kodepj,
+        //                 total_harga: total_harga,
+        //                 diskon: diskon,
+        //                 total: total,              
+        //             },
+        //             cache: false,
+        //             success: function(data){
+        //                 $("#exampleModal").modal("show");
+        //             }
+        //         });
+        //     }
+        //     else{
+        //         alert('Please fill all the field !');
+        //     }
+        //     });
+        // });
+
+        
+
+
+//         $(document).ready(function() {
+//     $('#butsave').on('click', function() {
+//         $("#butsave").attr("disabled", "disabled");
+//         var name = $('#name').val();
+//         var email = $('#email').val();
+//         var phone = $('#phone').val();
+//         var city = $('#city').val();
+//         if(name!="" && email!="" && phone!="" && city!=""){
+//             $.ajax({
+//                 url: "save.php",
+//                 type: "POST",
+//                 data: {
+//                     name: name,
+//                     email: email,
+//                     phone: phone,
+//                     city: city              
+//                 },
+//                 cache: false,
+//                 success: function(dataResult){
+//                     var dataResult = JSON.parse(dataResult);
+//                     if(dataResult.statusCode==200){
+//                         $("#butsave").removeAttr("disabled");
+//                         $('#fupForm').find('input:text').val('');
+//                         $("#success").show();
+//                         $('#success').html('Data added successfully !');                        
+//                     }
+//                     else if(dataResult.statusCode==201){
+//                        alert("Error occured !");
+//                     }
+                    
+//                 }
+//             });
+//         }
+//         else{
+//             alert('Please fill all the field !');
+//         }
+//     });
+// });
+
+    $(document).ready(function() {
+        $("#btnBayar").click(function() {
+            let kode = $("#kode-pj").val();
+            let satu = $("#1").val();
+            let dua = $("#2").val();
+            let tiga = $("#3").val();
+
+          $.post("./page/penjualan/simpan-data.php", {
+            kode : kode,
+            satu : satu,
+            dua : dua,
+            tiga : tiga
+          }, 
+            function(data, status) {
+              if (data === "success"){
+                $("#response").html("<div class='alert alert-info'>"+data+"</div>");
+              } else {
+                $("#exampleModal").modal("show");
+              }
+            });
+        });
+      });
+
+
 
 </script>

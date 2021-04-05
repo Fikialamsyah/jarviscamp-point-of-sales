@@ -7,7 +7,7 @@
                           <form method="POST">
                             <div class="form-group">
                               <label for="nama">Nama Kategori Toko</label>
-                              <input type="text" class="form-control" id="nama" aria-describedby="emailHelp" placeholder="Masukkan nama kategori toko baru" name="nama">
+                              <input type="text" class="form-control" id="nama" aria-describedby="emailHelp" placeholder="Masukkan nama kategori toko baru" name="nama" required>
                             </div>
                             <button type="submit" class="btn btn-primary" name="simpan">Simpan</button>
                           </form>

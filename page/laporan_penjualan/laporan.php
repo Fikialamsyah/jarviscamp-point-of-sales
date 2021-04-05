@@ -9,7 +9,7 @@
                         <div class="card mb-4 shadow rounded">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-striped">
+                                    <table class="table table-striped table-bordered text-center">
                                       <thead class="thead-light">  
                                         <tr>
                                             <th>No</th>

@@ -2,7 +2,6 @@
   $kode_penjualan = $_POST["kode_penjualan"];
   include '../../koneksi.php';
 ?>  
-<!doctype html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -61,7 +60,7 @@
                     <div class="col-lg-4 col-sm-5">
                     </div>
                     <div class="col-lg-4 col-sm-5 ml-auto">
-                        <table class="table table-clear">
+                        <table class="table">
                             <tbody>
                                 <?php 
                                   $sql = $myPDO->prepare("SELECT * FROM total_bayar WHERE kode_penjualan = '$kode_penjualan' ");

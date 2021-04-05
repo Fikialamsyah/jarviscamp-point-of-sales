@@ -11,7 +11,7 @@
                         <div class="card mb-4 shadow rounded">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-striped">
+                                    <table class="table table-striped table-bordered text-center">
                                       <thead class="thead-light">  
                                         <tr>
                                             <th>No</th>
@@ -47,7 +47,7 @@
 
                                         </tbody>
                                     </table>
-                                    <form action="page/laporan_penjualan/cetak.php" method="POST" target="_blank">
+                                    <form action="page/laporan_penjualan/coba.php" method="POST" target="_blank">
                                         <input type="text" name="kode_penjualan" value="<?= $kode_penjualan ?>" readonly style="visibility: hidden;"><br>
                                         <button type="submit" class="btn btn-success">Cetak</button>
                                     </form>

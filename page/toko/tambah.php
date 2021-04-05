@@ -7,15 +7,15 @@
                           <form method="POST">
                             <div class="form-group">
                               <label for="nama">Nama Toko</label>
-                              <input type="text" class="form-control" id="nama" aria-describedby="emailHelp" placeholder="Masukkan nama kategori barang" name="nama">
+                              <input type="text" class="form-control" id="nama" aria-describedby="emailHelp" placeholder="Masukkan nama kategori barang" name="nama" required>
                             </div>
                             <div class="form-group">
                               <label for="alamat">Alamat</label>
-                              <input type="text" class="form-control" id="alamat" aria-describedby="alamatHelp" placeholder="Masukkan alamat barang" name="alamat">
+                              <input type="text" class="form-control" id="alamat" aria-describedby="alamatHelp" placeholder="Masukkan alamat barang" name="alamat" required>
                             </div>
                             <div class="form-group">
                               <label for="telepon">Telepon</label>
-                              <input type="text" class="form-control" id="telepon" aria-describedby="emailHelp" placeholder="Berikan telepon barang" name="telepon">
+                              <input type="tel" pattern="\(\d\d\d\d\)-\d\d\d\d\d\d\d\d" class="form-control" id="telepon" aria-describedby="emailHelp" placeholder="(9999)-999999999" name="telepon" required>
                             </div>
                             <div class="form-group">
                             <label for="kategori">Kategori Produk</label>

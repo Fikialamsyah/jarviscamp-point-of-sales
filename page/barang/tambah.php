@@ -7,19 +7,19 @@
                           <form method="POST" enctype="multipart/form-data">
                             <div class="form-group">
                               <label for="kode">Kode Produk</label>
-                              <input type="text" class="form-control" id="kode" aria-describedby="emailHelp" placeholder="Masukkan kode kategori barang" name="kode">
+                              <input type="text" class="form-control" id="kode" aria-describedby="emailHelp" placeholder="Masukkan kode kategori barang" name="kode" required>
                             </div>
                             <div class="form-group">
                               <label for="gambar">Gambar Produk</label>
-                              <input type="file" class="form-control-file" id="gambar" name="gambar">
+                              <input type="file" class="form-control-file" id="gambar" name="gambar" required>
                             </div>
                             <div class="form-group">
                               <label for="nama">Nama Barang</label>
-                              <input type="nama" class="form-control" id="nama" aria-describedby="namaHelp" placeholder="Masukkan nama barang" name="nama">
+                              <input type="nama" class="form-control" id="nama" aria-describedby="namaHelp" placeholder="Masukkan nama barang" name="nama" required>
                             </div>
                             <div class="form-group">
                               <label for="deskripsi">Deskripsi</label>
-                              <input type="text" class="form-control" id="deskripsi" aria-describedby="emailHelp" placeholder="Berikan deskripsi barang" name="deskripsi">
+                              <input type="text" class="form-control" id="deskripsi" aria-describedby="emailHelp" placeholder="Berikan deskripsi barang" name="deskripsi" required>
                             </div>
                             <div class="form-group">
                             <label for="kategori">Kategori Produk</label>

@@ -42,8 +42,16 @@ $tampil = $sql->fetch(PDO::FETCH_ASSOC);
         if(isset($_POST["update"])){
     $username = $_POST["username"];
     $email = $_POST["email"];
+    $password = $_POST["password"];
 
-    $sql = $myPDO->prepare("update $user set username = '$username', email = '$email' where id = '$id' ");
+    if ($password === $tampil["password"]){
+        $sql = $myPDO->prepare("update $user set username = '$username', email = '$email' where id = '$id' ");
+    } else {
+        $password = password_hash($password, PASSWORD_DEFAULT);
+        $sql = $myPDO->prepare("update $user set username = '$username', email = '$email', password = '$password' where id = '$id' ");
+    }
+
+    
     
     try {
 
